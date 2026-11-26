@@ -173,9 +173,9 @@ tailwind.config = {
         أدخل رقم المرجع المكوّن من ست خانات لعرض مستند التأشيرة وتواريخ صلاحيتها وحالتها الحالية.
       </p>
       <ul class="mt-4 flex flex-wrap gap-2">
-        <li class="rounded-[4px] border border-gold-500 px-2.5 py-1 text-[11px] font-semibold text-gold-200">Six-character reference</li>
-        <li class="rounded-[4px] border border-gold-500 px-2.5 py-1 text-[11px] font-semibold text-gold-200">Document in English and Arabic</li>
-        <li class="rounded-[4px] border border-gold-500 px-2.5 py-1 text-[11px] font-semibold text-gold-200">Shareable result link</li>
+        <li><a href="#inquiry" onclick="setTimeout(function(){var el=document.getElementById('codeInput');if(el){el.focus();}},300);return true;" class="rounded-[4px] border border-gold-500 px-2.5 py-1 text-[11px] font-semibold text-gold-200 hover:bg-white/10 transition-colors cursor-pointer">Six-character reference</a></li>
+        <li><a href="#howItWorks" class="rounded-[4px] border border-gold-500 px-2.5 py-1 text-[11px] font-semibold text-gold-200 hover:bg-white/10 transition-colors cursor-pointer">Document in English and Arabic</a></li>
+        <li><a href="#faqSection" class="rounded-[4px] border border-gold-500 px-2.5 py-1 text-[11px] font-semibold text-gold-200 hover:bg-white/10 transition-colors cursor-pointer">Shareable result link</a></li>
       </ul>
     </div>
   </div>
@@ -239,7 +239,7 @@ tailwind.config = {
 
   <section aria-labelledby="howTitle" class="mt-10">
     <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-      <h2 id="howTitle" class="text-lg font-semibold text-navy sm:text-xl">How the check works</h2>
+      <h2 id="howItWorks" class="text-lg font-semibold text-navy sm:text-xl">How the check works</h2>
       <p class="ar-ui text-[15px] font-semibold text-navy-800" dir="rtl" lang="ar">كيف يتم التحقق</p>
     </div>
     <div class="section-rule mt-3"><i></i></div>
@@ -373,7 +373,7 @@ tailwind.config = {
     </div>
   </section>
 
-  <section aria-labelledby="faqTitle" class="mt-10 pb-2">
+  <section id="faqSection" aria-labelledby="faqTitle" class="mt-10 pb-2">
     <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
       <h2 id="faqTitle" class="text-lg font-semibold text-navy sm:text-xl">Questions about this portal</h2>
       <p class="ar-ui text-[15px] font-semibold text-navy-800" dir="rtl" lang="ar">أسئلة عن هذه البوابة</p>
