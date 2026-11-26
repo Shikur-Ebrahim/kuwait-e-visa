@@ -8,6 +8,22 @@
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="Demonstration prototype of a Kuwait eVisa status inquiry and verification portal. Not an official Ministry of Interior service.">
 <title>eVisa Status Inquiry · State of Kuwait (Demonstration)</title>
+
+<!-- Open Graph / Rich Social Sharing Preview -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="State of Kuwait · Ministry of Interior">
+<meta property="og:title" content="eVisa Status Inquiry · State of Kuwait (Demonstration)">
+<meta property="og:description" content="Demonstration prototype of a Kuwait eVisa status inquiry and verification portal. Not an official Ministry of Interior service.">
+<meta property="og:image" content="https://res.cloudinary.com/ujbsqmo3/image/upload/v1795688274/kuwait/kbwwjrga899q3ql7klcp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="State of Kuwait · Ministry of Interior eVisa Portal Demonstration">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="eVisa Status Inquiry · State of Kuwait (Demonstration)">
+<meta name="twitter:description" content="Demonstration prototype of a Kuwait eVisa status inquiry and verification portal. Not an official Ministry of Interior service.">
+<meta name="twitter:image" content="https://res.cloudinary.com/ujbsqmo3/image/upload/v1795688274/kuwait/kbwwjrga899q3ql7klcp.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 29 6.5v12.4C29 25.8 23.2 29.6 16 30 8.8 29.6 3 25.8 3 18.9V6.5Z' fill='%23003366'/%3E%3Cpath d='M9 19.5h14l-2.2 4h-9.6Z' fill='%23c8a951'/%3E%3Cpath d='M16.6 9.5 21 19.5h-4.4Z' fill='%23e8d7a0'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1660,20 +1676,30 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
     } catch (e) { return false; }
   }
 
-  async function shareLink(link) {
+  async function shareLink(link, title, text) {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: title || 'eVisa Status Inquiry · State of Kuwait (Demonstration)',
+          text: text || 'Kuwait eVisa Verification Link:',
+          url: link
+        });
+        return;
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;
+      }
+    }
     const ok = await copyText(link);
-    if (ok) { toast('Link copied. Opening it checks the reference automatically, including inside Telegram.'); return; }
+    if (ok) {
+      toast('Link copied: ' + link);
+      return;
+    }
     openShare(link, true);
   }
 
   const baseLink = () => window.location.href.split('#')[0].split('?')[0];
-  const shareLinkFor = (code, rec) => {
-    let url = baseLink() + '?code=' + encodeURIComponent(code);
-    if (rec) {
-      const tok = encodeVisaToken(rec);
-      if (tok) url += '&v=' + encodeURIComponent(tok);
-    }
-    return url;
+  const shareLinkFor = (code) => {
+    return baseLink() + '?code=' + encodeURIComponent(code);
   };
 
   function syncUrl(code) {
@@ -1763,7 +1789,9 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
     const pr = $('#printBtn');
     if (pr) pr.addEventListener('click', function () { window.print(); });
     const cl = $('#copyLinkBtn');
-    if (cl) cl.addEventListener('click', function () { shareLink(shareLinkFor(v.code, v)); });
+    if (cl) cl.addEventListener('click', function () {
+      shareLink(shareLinkFor(v.code), 'Kuwait eVisa · ' + v.code, 'Kuwait electronic visa verification for ' + (v.full_name_en || v.code) + ':');
+    });
     const nb = $('#newBtn');
     if (nb) nb.addEventListener('click', resetInquiry);
   }
@@ -2429,7 +2457,7 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       const rec = state.records.find((r) => r.id === id);
       if (!rec) return;
       if (act === 'view') previewRecord(id);
-      else if (act === 'link') shareLink(shareLinkFor(rec.code, rec));
+      else if (act === 'link') shareLink(shareLinkFor(rec.code), 'Kuwait eVisa · ' + rec.code, 'Kuwait electronic visa verification for ' + (rec.full_name_en || rec.code) + ':');
       else if (act === 'edit') openDrawer(rec);
       else if (act === 'delete') deleteRecord(id);
     });
