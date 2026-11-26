@@ -1,6 +1,7 @@
 {
   "name": "kuwait-evisa-portal",
   "version": "1.0.0",
+  "type": "module",
   "description": "Kuwait eVisa status inquiry and verification portal with Firebase Firestore",
   "scripts": {
     "start": "npx serve -l 8000 .",

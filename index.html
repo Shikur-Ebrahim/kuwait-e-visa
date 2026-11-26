@@ -739,29 +739,38 @@ import {
   where
 } from "firebase/firestore";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyC5LHnbxxE72Cl2H7f2w7gtLKf45A_WI5M",
-  authDomain: "kuwait-e9964.firebaseapp.com",
-  projectId: "kuwait-e9964",
-  storageBucket: "kuwait-e9964.firebasestorage.app",
-  messagingSenderId: "821959377940",
-  appId: "1:821959377940:web:b6531b02b5047709591301",
-  measurementId: "G-V53PVCL7J6"
-};
+// Load Firebase configuration dynamically from Vercel Environment Variables (/api/config)
+async function loadFirebaseConfig() {
+  try {
+    const res = await fetch('/api/config');
+    if (res.ok) {
+      const cfg = await res.json();
+      if (cfg && cfg.apiKey) return cfg;
+    }
+  } catch (e) {
+    /* If /api/config is unreachable (e.g. static local preview), check window config */
+  }
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-let analytics = null;
-try {
-  analytics = getAnalytics(app);
-} catch (e) {
-  /* Optional analytics */
+  if (typeof window !== 'undefined' && window.__FIREBASE_CONFIG__ && window.__FIREBASE_CONFIG__.apiKey) {
+    return window.__FIREBASE_CONFIG__;
+  }
+  return null;
 }
-const db = getFirestore(app);
+
+const firebaseConfig = await loadFirebaseConfig();
+let app = null;
+let db = null;
+let analytics = null;
+
+if (firebaseConfig && firebaseConfig.apiKey) {
+  try {
+    app = initializeApp(firebaseConfig);
+    try { analytics = getAnalytics(app); } catch (e) {}
+    db = getFirestore(app);
+  } catch (err) {
+    console.warn('Firebase init notice:', err);
+  }
+}
 const FIRESTORE_COLLECTION = 'kuwait_visas';
 
   const ADMIN_PASSCODE = 'admin2026';
@@ -927,6 +936,10 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       badge.textContent = 'Syncing...';
       badge.className = 'inline-flex items-center rounded-[4px] border border-amber-300 bg-amber-50 px-2.5 py-0.5 text-[11px] font-semibold text-amber-800';
       if (sub) sub.textContent = detail || 'Saving changes to Firebase Firestore...';
+    } else if (status === 'notice') {
+      badge.textContent = 'Local demo mode';
+      badge.className = 'inline-flex items-center rounded-[4px] border border-slate-300 bg-slate-50 px-2.5 py-0.5 text-[11px] font-semibold text-slate-700';
+      if (sub) sub.textContent = detail || 'Saved on this device. Add Firebase environment variables in Vercel to enable cloud sync.';
     } else if (status === 'error') {
       badge.textContent = 'Sync notice, click to retry';
       badge.className = 'inline-flex items-center rounded-[4px] border border-alert bg-[#fdf4f4] px-2.5 py-0.5 text-[11px] font-semibold text-alert';
@@ -1008,6 +1021,11 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
   }
 
   async function pullFromFirestore(force) {
+    if (!db) {
+      if (!memRows.length) await loadBundledIndex();
+      setSyncState('notice');
+      return false;
+    }
     if (!force && (Date.now() - lastPullAt) < 5000 && memRows.length > 0) return true;
     try {
       const colRef = collection(db, FIRESTORE_COLLECTION);
@@ -1035,6 +1053,10 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
   }
 
   function enqueueCloudSync(taskFn) {
+    if (!db) {
+      setSyncState('notice');
+      return Promise.resolve();
+    }
     pendingSyncs++;
     lastSyncFailed = false;
     setSyncState('syncing');
@@ -1071,7 +1093,7 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
     find: async function (code) {
       const target = String(code || '').toUpperCase();
       let found = this.findLocal(target);
-      if (!found) {
+      if (!found && db) {
         try {
           const q = query(collection(db, FIRESTORE_COLLECTION), where("code", "==", target));
           const snap = await getDocs(q);
@@ -1177,13 +1199,17 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
   async function initStore() {
     loadLocalCache();
     if (!memRows.length) await loadBundledIndex();
-    if (memRows.length) {
-      pullFromFirestore(true).then(() => {
-        state.records = memRows.slice().sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
-        if (isShown($('#adminConsole'))) renderList();
-      });
+    if (db) {
+      if (memRows.length) {
+        pullFromFirestore(true).then(() => {
+          state.records = memRows.slice().sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
+          if (isShown($('#adminConsole'))) renderList();
+        });
+      } else {
+        await pullFromFirestore(true);
+      }
     } else {
-      await pullFromFirestore(true);
+      setSyncState('notice');
     }
     state.mode = 'cloud';
     state.store = CloudStore;
