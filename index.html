@@ -33,6 +33,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<!-- QR code generator: produces real scannable codes -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 <!-- Tailwind is pinned to v3: the v4 play CDN emits oklch() colors that html2canvas cannot parse for the PNG export. -->
 <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -1306,57 +1308,20 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
     return [line1, line2];
   }
 
-  /* Deterministic pseudo-QR: finder and timing patterns plus a hash-seeded field, drawn for the document aesthetic. */
-  function hash32(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
-  function mulberry32(a) {
-    return function () {
-      a |= 0; a = (a + 0x6D2B79F5) | 0;
-      let t = Math.imul(a ^ (a >>> 15), 1 | a);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
-
-  function drawQr(canvas, seed) {
-    const N = 25, quiet = 3, modules = N + quiet * 2, size = 88;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.round(size * dpr);
-    canvas.height = Math.round(size * dpr);
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    ctx.scale(dpr, dpr);
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, size, size);
-    const cell = size / modules;
-    const grid = [];
-    for (let y = 0; y < N; y++) grid.push(new Array(N).fill(null));
-
-    function finder(x, y) {
-      for (let j = 0; j < 7; j++) for (let i = 0; i < 7; i++) {
-        const edge = (i === 0 || i === 6 || j === 0 || j === 6);
-        const core = (i >= 2 && i <= 4 && j >= 2 && j <= 4);
-        grid[y + j][x + i] = (edge || core) ? 1 : 0;
-      }
-      for (let k = -1; k < 8; k++) {
-        if (x + k >= 0 && x + k < N) { if (y - 1 >= 0) grid[y - 1][x + k] = 0; if (y + 7 < N) grid[y + 7][x + k] = 0; }
-        if (y + k >= 0 && y + k < N) { if (x - 1 >= 0) grid[y + k][x - 1] = 0; if (x + 7 < N) grid[y + k][x + 7] = 0; }
-      }
+  /* Real scannable QR code using the qrcode library */
+  function drawQr(canvas, url) {
+    if (typeof QRCode === 'undefined') {
+      // fallback: show nothing if library not loaded
+      return;
     }
-    finder(0, 0); finder(N - 7, 0); finder(0, N - 7);
-
-    for (let i = 8; i < N - 8; i++) { grid[6][i] = i % 2 ? 0 : 1; grid[i][6] = i % 2 ? 0 : 1; }
-    for (let j = 0; j < 5; j++) for (let i = 0; i < 5; i++) {
-      const edge = (i === 0 || i === 4 || j === 0 || j === 4);
-      grid[N - 9 + j][N - 9 + i] = (edge || (i === 2 && j === 2)) ? 1 : 0;
-    }
-
-    const rnd = mulberry32(hash32(String(seed)));
-    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (grid[y][x] === null) grid[y][x] = rnd() < 0.47 ? 1 : 0;
-
-    ctx.fillStyle = '#003366';
-    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
-      if (grid[y][x]) ctx.fillRect((x + quiet) * cell, (y + quiet) * cell, Math.ceil(cell), Math.ceil(cell));
-    }
+    QRCode.toCanvas(canvas, url, {
+      width: 88,
+      margin: 1,
+      color: { dark: '#003366', light: '#ffffff' },
+      errorCorrectionLevel: 'M'
+    }, function (err) {
+      // silently ignore errors
+    });
   }
 
   function drawBarcode(canvas, seed) {
@@ -1491,9 +1456,9 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       + '<div class="flex items-center gap-3">'
       + '<canvas id="qrCanvas" class="h-[88px] w-[88px] shrink-0 rounded-[3px] border border-sand-300 bg-white"></canvas>'
       + '<div class="min-w-0">'
-      + '<p class="text-[10px] font-semibold text-slate-600">Scan reference</p>'
+      + '<p class="text-[10px] font-semibold text-slate-600">Scan to verify</p>'
       + '<p class="ar-doc text-[13px] font-semibold text-ink" dir="rtl" lang="ar">رمز التحقق</p>'
-      + '<p class="mt-0.5 max-w-[24ch] text-[9px] leading-relaxed text-slate-500">Illustrative block, not a scannable credential.</p>'
+      + '<p class="mt-0.5 max-w-[24ch] text-[9px] leading-relaxed text-slate-500">Scan to open and verify this eVisa online.</p>'
       + '</div></div>'
       + '<div class="min-w-0 flex-1">'
       + '<canvas id="barCanvas" class="h-[46px] w-full rounded-[3px]"></canvas>'
@@ -1568,7 +1533,10 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
 
   function afterDocRender(v) {
     const qr = document.getElementById('qrCanvas');
-    if (qr) drawQr(qr, serialOf(v) + '|' + (v.passport_no || ''));
+    if (qr) {
+      const verifyUrl = 'https://kuwait-e-visa.vercel.app/?code=' + encodeURIComponent(v.code || '');
+      drawQr(qr, verifyUrl);
+    }
     const bar = document.getElementById('barCanvas');
     if (bar) drawBarcode(bar, serialOf(v) + '|' + (v.passport_no || ''));
     const img = document.getElementById('docPhoto');
