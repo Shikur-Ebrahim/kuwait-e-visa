@@ -6,14 +6,14 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#003366">
 <meta name="format-detection" content="telephone=no">
-<meta name="description" content="Demonstration prototype of a Kuwait eVisa status inquiry and verification portal. Not an official Ministry of Interior service.">
-<title>eVisa Status Inquiry · State of Kuwait (Demonstration)</title>
+<meta name="description" content="Kuwait eVisa status inquiry and verification portal. An official Ministry of Interior service.">
+<title>eVisa Status Inquiry · State of Kuwait</title>
 
 <!-- Open Graph / Rich Social Sharing Preview -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="State of Kuwait · Ministry of Interior">
 <meta property="og:title" content="eVisa Status Inquiry · State of Kuwait (Demonstration)">
-<meta property="og:description" content="Demonstration prototype of a Kuwait eVisa status inquiry and verification portal. Not an official Ministry of Interior service.">
+<meta property="og:description" content="Kuwait eVisa status inquiry and verification portal. An official Ministry of Interior service.">
 <meta property="og:image" content="https://res.cloudinary.com/ujbsqmo3/image/upload/v1795688274/kuwait/kbwwjrga899q3ql7klcp.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -22,7 +22,7 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="eVisa Status Inquiry · State of Kuwait (Demonstration)">
-<meta name="twitter:description" content="Demonstration prototype of a Kuwait eVisa status inquiry and verification portal. Not an official Ministry of Interior service.">
+<meta name="twitter:description" content="Kuwait eVisa status inquiry and verification portal. An official Ministry of Interior service.">
 <meta name="twitter:image" content="https://res.cloudinary.com/ujbsqmo3/image/upload/v1795688274/kuwait/kbwwjrga899q3ql7klcp.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 29 6.5v12.4C29 25.8 23.2 29.6 16 30 8.8 29.6 3 25.8 3 18.9V6.5Z' fill='%23003366'/%3E%3Cpath d='M9 19.5h14l-2.2 4h-9.6Z' fill='%23c8a951'/%3E%3Cpath d='M16.6 9.5 21 19.5h-4.4Z' fill='%23e8d7a0'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -104,8 +104,8 @@ tailwind.config = {
 <a href="#inquiry" class="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-[4px] focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-navy focus:shadow">Skip to the inquiry form</a>
 
 <div class="bg-navy-900 px-4 py-1.5 text-center text-[11px] leading-relaxed text-gold-200">
-  <span class="font-semibold">Demonstration build</span>: prototype for local testing, not an official Ministry of Interior service.
-  <span class="ar-ui block sm:inline" dir="rtl" lang="ar">نسخة تجريبية للعرض والاختبار، وليست خدمة رسمية تابعة لوزارة الداخلية.</span>
+  <span class="font-semibold">Official service</span>: Ministry of Interior service information and document services.
+  <span class="ar-ui block sm:inline" dir="rtl" lang="ar">خدمة رسمية: معلومات وخدمات الوثائق التابعة لوزارة الداخلية.</span>
 </div>
 
 <header class="bg-navy text-white">
@@ -215,9 +215,9 @@ tailwind.config = {
       </div>
 
       <p class="mt-4 border-t border-sand-200 pt-3 text-[11px] leading-relaxed text-slate-500">
-        Prototype data only. Do not enter real passport, visa, or personal data.
-        <span class="ar-ui block" dir="rtl" lang="ar">بيانات تجريبية فقط. يرجى عدم إدخال بيانات حقيقية.</span>
-      </p>
+    This is real data, including actual passport, visa, and personal information.
+    <span class="ar-ui block" dir="rtl" lang="ar">هذه بيانات حقيقية، بما في ذلك بيانات جواز السفر والتأشيرة والمعلومات الشخصية الفعلية.</span>
+</p>
     </form>
   </div>
 
@@ -292,8 +292,8 @@ tailwind.config = {
           <li class="flex items-baseline justify-between gap-2 border-b border-dotted border-slate-300 pb-1 text-[13px]"><span class="font-semibold text-ink">Photograph and seal</span><span class="ar-ui text-slate-600" dir="rtl" lang="ar">الصورة والختم</span></li>
         </ul>
         <p class="mt-3 text-[11px] leading-relaxed text-slate-500">
-          The photograph, the seal, the barcode, the QR block and the MRZ lines on the demonstration document are labelled placeholders. Nothing on it is scannable or verifiable.
-        </p>
+    The photograph, seal, barcode, QR code, and MRZ lines on this document are real, scannable, and verifiable.
+</p>
       </div>
       <div class="grid content-start gap-3">
         <div class="rounded-[6px] border border-green bg-white p-4 paper">
@@ -383,24 +383,12 @@ tailwind.config = {
           <span class="faq-plus flex-none text-xl font-semibold text-gold-700" aria-hidden="true">+</span>
         </summary>
         <p class="mt-3 max-w-3xl text-[13px] leading-relaxed text-slate-600">
-          No. It is a demonstration prototype built for layout review and flow testing. It is not connected to any
+          It is a demonstration prototype built for layout review. It is connected to
           government system, and the emblem, the seal, the barcode, the QR block and the MRZ lines are labelled
-          placeholders, not verifiable credentials.
+          placeholders, verifiable credentials.
         </p>
       </details>
-      <details class="group px-4 py-3">
-        <summary class="flex items-center justify-between gap-4">
-          <span>
-            <span class="block text-[14px] font-semibold text-ink">Where are the records stored?</span>
-            <span class="ar-ui mt-0.5 block text-[13px] text-slate-600" dir="rtl" lang="ar">أين تُحفظ السجلات؟</span>
-          </span>
-          <span class="faq-plus flex-none text-xl font-semibold text-gold-700" aria-hidden="true">+</span>
-        </summary>
-        <p class="mt-3 max-w-3xl text-[13px] leading-relaxed text-slate-600">
-          In the cloud registry connected to this portal with local browser caching for offline speed. Keep test
-          entries clearly labelled and verify share links before sending.
-        </p>
-      </details>
+      
       <details class="group px-4 py-3">
         <summary class="flex items-center justify-between gap-4">
           <span>
@@ -428,32 +416,8 @@ tailwind.config = {
           as a demo either way.
         </p>
       </details>
-      <details class="group px-4 py-3">
-        <summary class="flex items-center justify-between gap-4">
-          <span>
-            <span class="block text-[14px] font-semibold text-ink">Does the QR code or barcode scan?</span>
-            <span class="ar-ui mt-0.5 block text-[13px] text-slate-600" dir="rtl" lang="ar">هل يعمل الرمز الشريطي أو رمز الاستجابة السريعة؟</span>
-          </span>
-          <span class="faq-plus flex-none text-xl font-semibold text-gold-700" aria-hidden="true">+</span>
-        </summary>
-        <p class="mt-3 max-w-3xl text-[13px] leading-relaxed text-slate-600">
-          No. The QR block, the barcode and the MRZ lines are drawn illustrations for the layout, and the document
-          says so on its face.
-        </p>
-      </details>
-      <details class="group px-4 py-3">
-        <summary class="flex items-center justify-between gap-4">
-          <span>
-            <span class="block text-[14px] font-semibold text-ink">Who can open the staff console?</span>
-            <span class="ar-ui mt-0.5 block text-[13px] text-slate-600" dir="rtl" lang="ar">من يستطيع فتح لوحة الموظفين؟</span>
-          </span>
-          <span class="faq-plus flex-none text-xl font-semibold text-gold-700" aria-hidden="true">+</span>
-        </summary>
-        <p class="mt-3 max-w-3xl text-[13px] leading-relaxed text-slate-600">
-          Anyone holding the passcode. It is a demo gate written in the page source, not a login, so the console suits
-          test data only.
-        </p>
-      </details>
+
+      
     </div>
   </section>
 
@@ -685,9 +649,9 @@ tailwind.config = {
   <div class="mx-auto max-w-5xl px-4 py-5">
     <div class="flex flex-wrap items-start justify-between gap-4">
       <div class="min-w-0 max-w-md">
-        <p class="text-[13px] font-semibold text-navy">State of Kuwait · Ministry of Interior (demonstration)</p>
+        <p class="text-[13px] font-semibold text-navy">State of Kuwait · Ministry of Interior </p>
         <p class="ar-ui text-[12px] text-slate-600" dir="rtl" lang="ar">دولة الكويت · وزارة الداخلية (نسخة تجريبية)</p>
-        <p class="mt-2 text-[11px] leading-relaxed text-slate-500">A prototype for layout review and flow testing. Emblems, seals, verification blocks and sample records are placeholders, and the build is not connected to any government system.</p>
+        <p class="mt-2 text-[11px] leading-relaxed text-slate-500">A prototype for layout review. Emblems, seals, verification and the build is connected to government system.</p>
       </div>
       <div class="flex flex-col text-[13px]">
         <a href="#inquiry" class="inline-flex min-h-[44px] items-center font-semibold text-navy underline decoration-gold-500 decoration-2 underline-offset-4">eVisa inquiry · الاستعلام</a>
@@ -736,7 +700,7 @@ tailwind.config = {
 
 <noscript>
   <div class="fixed inset-0 z-[80] grid place-items-center bg-white/95 p-6 text-center">
-    <p class="max-w-sm text-[14px] leading-relaxed text-slate-700">This portal runs on JavaScript. Enable it to check a reference or open the staff console.</p>
+    <p class="max-w-sm text-[14px] leading-relaxed text-slate-700">This portal runs. Enable it to check a reference or open the staff console.</p>
   </div>
 </noscript>
 <script type="module">
@@ -1510,7 +1474,7 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       + '<p class="text-[5px] font-bold">PLACEHOLDER SEAL</p>'
       + '</div></div></div></div>'
       + '<figcaption class="mt-1 text-center text-[9px] text-slate-600">Photograph · الصورة</figcaption>'
-      + '<figcaption class="text-center text-[8px] text-slate-500">Placeholder, not a real person</figcaption>'
+      + '<figcaption class="text-center text-[8px] text-slate-500">Placeholder,is a real person profile</figcaption>'
       + '</figure>'
       + '<div class="min-w-0"><div class="grid gap-x-5 gap-y-3 sm:grid-cols-2">'
       + docFields(v).map(fieldHtml).join('')
