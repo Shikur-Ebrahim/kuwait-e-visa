@@ -12,16 +12,18 @@
 <!-- Open Graph / Rich Social Sharing Preview -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="State of Kuwait · Ministry of Interior">
-<meta property="og:title" content="eVisa Status Inquiry · State of Kuwait (Demonstration)">
+<meta property="og:title" content="eVisa Status Inquiry · State of Kuwait">
 <meta property="og:description" content="Kuwait eVisa status inquiry and verification portal. An official Ministry of Interior service.">
 <meta property="og:image" content="https://res.cloudinary.com/ujbsqmo3/image/upload/v1795688274/kuwait/kbwwjrga899q3ql7klcp.png">
+<meta property="og:image:secure_url" content="https://res.cloudinary.com/ujbsqmo3/image/upload/v1795688274/kuwait/kbwwjrga899q3ql7klcp.png">
+<meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="State of Kuwait · Ministry of Interior eVisa Portal Demonstration">
+<meta property="og:image:alt" content="State of Kuwait · Ministry of Interior eVisa Portal">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="eVisa Status Inquiry · State of Kuwait (Demonstration)">
+<meta name="twitter:title" content="eVisa Status Inquiry · State of Kuwait">
 <meta name="twitter:description" content="Kuwait eVisa status inquiry and verification portal. An official Ministry of Interior service.">
 <meta name="twitter:image" content="https://res.cloudinary.com/ujbsqmo3/image/upload/v1795688274/kuwait/kbwwjrga899q3ql7klcp.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 29 6.5v12.4C29 25.8 23.2 29.6 16 30 8.8 29.6 3 25.8 3 18.9V6.5Z' fill='%23003366'/%3E%3Cpath d='M9 19.5h14l-2.2 4h-9.6Z' fill='%23c8a951'/%3E%3Cpath d='M16.6 9.5 21 19.5h-4.4Z' fill='%23e8d7a0'/%3E%3C/svg%3E">
@@ -1644,7 +1646,7 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
     if (navigator.share) {
       try {
         await navigator.share({
-          title: title || 'eVisa Status Inquiry · State of Kuwait (Demonstration)',
+          title: title || 'eVisa Status Inquiry · State of Kuwait',
           text: text || 'Kuwait eVisa Verification Link:',
           url: link
         });
