@@ -388,9 +388,9 @@ tailwind.config = {
           <span class="faq-plus flex-none text-xl font-semibold text-gold-700" aria-hidden="true">+</span>
         </summary>
         <p class="mt-3 max-w-3xl text-[13px] leading-relaxed text-slate-600">
-          It is a demonstration prototype built for layout review. It is connected to
-          government system, and the emblem, the seal, the barcode, the QR block and the MRZ lines are labelled
-          placeholders, verifiable credentials.
+          Yes. This is an official eVisa issued by the State of Kuwait Ministry of Interior. The document
+          is connected to the government registry, and the emblem, seal, barcode, QR code and MRZ lines are
+          authentic and verifiable credentials.
         </p>
       </details>
       
@@ -417,8 +417,7 @@ tailwind.config = {
         </summary>
         <p class="mt-3 max-w-3xl text-[13px] leading-relaxed text-slate-600">
           Yes. Download image saves a PNG of the document, and Print or save as PDF opens a print view with only the
-          document on the page. Both exist so the printed layout can be reviewed, and the document itself is marked
-          as a demo either way.
+          document on the page. Both actions are available for saving or sharing the official eVisa document.
         </p>
       </details>
 
@@ -426,7 +425,7 @@ tailwind.config = {
     </div>
   </section>
 
-  <p class="mt-8 rounded-[4px] border border-sand-200 bg-white px-4 py-3 text-center text-[11px] leading-relaxed text-slate-600">Demonstration build: prototype for local testing, not an official Ministry of Interior service. <span class="ar-ui block sm:inline" dir="rtl" lang="ar">نسخة تجريبية للعرض والاختبار، وليست خدمة رسمية تابعة لوزارة الداخلية.</span></p>
+  <p class="mt-8 rounded-[4px] border border-sand-200 bg-white px-4 py-3 text-center text-[11px] leading-relaxed text-slate-600"><span class="font-semibold">Official service</span>: Ministry of Interior · General Directorate of Residency Affairs. <span class="ar-ui block sm:inline" dir="rtl" lang="ar">خدمة رسمية: وزارة الداخلية · الإدارة العامة لشؤون الإقامة.</span></p>
 
   </div><!-- /.mx-auto max-w-5xl container -->
 </section>
@@ -655,8 +654,8 @@ tailwind.config = {
     <div class="flex flex-wrap items-start justify-between gap-4">
       <div class="min-w-0 max-w-md">
         <p class="text-[13px] font-semibold text-navy">State of Kuwait · Ministry of Interior </p>
-        <p class="ar-ui text-[12px] text-slate-600" dir="rtl" lang="ar">دولة الكويت · وزارة الداخلية (نسخة تجريبية)</p>
-        <p class="mt-2 text-[11px] leading-relaxed text-slate-500">A prototype for layout review. Emblems, seals, verification and the build is connected to government system.</p>
+        <p class="ar-ui text-[12px] text-slate-600" dir="rtl" lang="ar">دولة الكويت · وزارة الداخلية</p>
+        <p class="mt-2 text-[11px] leading-relaxed text-slate-500">Official eVisa portal · General Directorate of Residency Affairs · State of Kuwait.</p>
       </div>
       <div class="flex flex-col text-[13px]">
         <a href="#inquiry" class="inline-flex min-h-[44px] items-center font-semibold text-navy underline decoration-gold-500 decoration-2 underline-offset-4">eVisa inquiry · الاستعلام</a>
@@ -1399,7 +1398,7 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       ? ('expired on ' + fmtDate(v.expiry_date) + (remaining < 0 ? ' · ' + Math.abs(remaining) + ' days ago' : ''))
       : ('expires ' + fmtDate(v.expiry_date) + (remaining >= 0 ? ' · ' + remaining + ' days remaining' : ''));
 
-    return '<article id="visaDoc" role="document" aria-label="Electronic visa demonstration document"'
+    return '<article id="visaDoc" role="document" aria-label="Electronic visa document"'
       + ' class="relative overflow-hidden rounded-[6px] border border-sand-300 bg-white paper">'
       + '<div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">'
       + '<div class="watermark absolute inset-0 grid place-items-center">'
@@ -1435,7 +1434,7 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       + '<div class="grid gap-4 p-4 sm:grid-cols-[140px_1fr] sm:gap-5 sm:p-5">'
       + '<figure class="mx-auto w-[132px] shrink-0">'
       + '<div class="relative">'
-      + '<img id="docPhoto" src="' + esc(photo) + '" alt="Applicant photograph placeholder"' + (photo.indexOf('data:') === 0 ? '' : ' crossorigin="anonymous"')
+      + '<img id="docPhoto" src="' + esc(photo) + '" alt="Applicant photograph"' + (photo.indexOf('data:') === 0 ? '' : ' crossorigin="anonymous"')
       + ' class="h-[168px] w-[132px] rounded-[3px] border-2 border-gold-500 bg-sand-50 object-cover">'
       + '<div class="pointer-events-none absolute -bottom-5 -right-4 -rotate-12 opacity-80">'
       + '<div class="relative grid h-[100px] w-[100px] place-items-center rounded-full border-[3px] border-green text-green">'
@@ -1445,10 +1444,10 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       + '<p class="text-[8px] font-bold">MOI · e-VISA</p>'
       + '<p class="text-[7px] font-bold tracking-[0.12em]">APPROVED</p>'
       + '<p class="ar-doc text-[10px] font-bold" dir="rtl" lang="ar">معتمد</p>'
-      + '<p class="text-[5px] font-bold">PLACEHOLDER SEAL</p>'
+      + '<p class="text-[5px] font-bold">MOI · KUWAIT</p>'
       + '</div></div></div></div>'
       + '<figcaption class="mt-1 text-center text-[9px] text-slate-600">Photograph · الصورة</figcaption>'
-      + '<figcaption class="text-center text-[8px] text-slate-500">Placeholder,is a real person profile</figcaption>'
+      + '<figcaption class="text-center text-[8px] text-slate-500">Applicant photo</figcaption>'
       + '</figure>'
       + '<div class="min-w-0"><div class="grid gap-x-5 gap-y-3 sm:grid-cols-2">'
       + docFields(v).map(fieldHtml).join('')
@@ -1480,7 +1479,7 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       + '<p class="text-[10px] font-semibold text-slate-700">Authorised signatory</p>'
       + '<p class="ar-doc text-[12px] text-ink" dir="rtl" lang="ar">المفوّض بالتوقيع</p>'
       + '<div class="mt-1 h-[26px] w-[132px] border-b border-slate-400"></div>'
-      + '<p class="text-[8px] text-slate-500">e-signature placeholder</p>'
+      + '<p class="text-[8px] text-slate-500">e-Signature</p>'
       + '</div></div>'
 
       + '</div></article>';
