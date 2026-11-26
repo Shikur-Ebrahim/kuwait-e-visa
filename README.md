@@ -37,7 +37,7 @@ npm start
 1. **Check a reference.** The inquiry card accepts a six-character reference. Type
    `123456` or press *Use sample reference 123456* to see the electronic visa document.
 2. **Open the staff console.** Navigate to `#admin` (or use the *Staff console* tab) and
-   unlock it with the demo passcode `admin2026`. From there you can create, edit and
+   unlock it with your configured passcode (`ADMIN_PASSCODE` in Vercel environment variables, default: `KW@2026#Admin`). From there you can create, edit and
    delete records, and copy a share link for any of them.
 
 ## Links between people

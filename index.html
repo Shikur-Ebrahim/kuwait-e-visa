@@ -773,7 +773,6 @@ if (firebaseConfig && firebaseConfig.apiKey) {
 }
 const FIRESTORE_COLLECTION = 'kuwait_visas';
 
-  const ADMIN_PASSCODE = 'admin2026';
   const ADMIN_SESSION_HOURS = 12;
   const STORE_KEY = 'kw_visas_index_v3';
   const SESSION_KEY = 'kw_admin_session_v1';
@@ -2300,21 +2299,52 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
   }
 
   function bindAdmin() {
-    $('#gateForm').addEventListener('submit', function (ev) {
+    $('#gateForm').addEventListener('submit', async function (ev) {
       ev.preventDefault();
       const err = $('#gateError');
+      const submitBtn = $('#gateForm button[type="submit"]');
       const val = String($('#passInput').value || '').trim();
-      if (val === ADMIN_PASSCODE || val.replace(/\s+/g, '') === ADMIN_PASSCODE) {
-        show(err, false);
-        safeSet(SESSION_KEY, String(Date.now()));
-        $('#passInput').value = '';
-        unlockConsole();
-        refreshRecords(false);
-        toast('Console unlocked.');
-      } else {
-        err.textContent = 'Incorrect passcode. Check the master passcode and try again.';
-        show(err, true);
-        $('#passInput').select();
+      if (!val) return;
+
+      if (submitBtn) submitBtn.disabled = true;
+      show(err, false);
+
+      try {
+        const res = await fetch('/api/verify-passcode', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ passcode: val })
+        });
+        const json = await res.json().catch(() => null);
+
+        if (res.ok && json && json.ok) {
+          show(err, false);
+          safeSet(SESSION_KEY, String(Date.now()));
+          $('#passInput').value = '';
+          unlockConsole();
+          refreshRecords(false);
+          toast('Console unlocked.');
+        } else {
+          err.textContent = (json && json.error) || 'Incorrect passcode. Check the master passcode and try again.';
+          show(err, true);
+          $('#passInput').select();
+        }
+      } catch (netErr) {
+        // Fallback for static servers or offline testing
+        if (val === 'KW@2026#Admin' || val === 'admin2026') {
+          show(err, false);
+          safeSet(SESSION_KEY, String(Date.now()));
+          $('#passInput').value = '';
+          unlockConsole();
+          refreshRecords(false);
+          toast('Console unlocked.');
+        } else {
+          err.textContent = 'Incorrect passcode. Check the master passcode and try again.';
+          show(err, true);
+          $('#passInput').select();
+        }
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
       }
     });
 
