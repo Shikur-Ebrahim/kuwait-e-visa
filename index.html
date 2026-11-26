@@ -1081,6 +1081,24 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
     }
   });
 
+  async function uploadImageToCloudinary(dataUrl) {
+    if (!dataUrl || dataUrl.indexOf('data:image/') !== 0) return dataUrl || '';
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: dataUrl })
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json && json.url) return json.url;
+      }
+    } catch (e) {
+      console.warn('Cloudinary upload notice:', e);
+    }
+    return '';
+  }
+
   const CloudStore = {
     list: async function (force) {
       if (force || !memRows.length) await pullFromFirestore(!!force);
@@ -1121,20 +1139,32 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
     create: function (rec, newDataPhoto) {
       const id = uid();
       const now = new Date().toISOString();
-      const photo = newDataPhoto || rec.photo_url || '';
+      const hasUploadPhoto = !!(newDataPhoto && newDataPhoto.indexOf('data:image/') === 0);
       const row = Object.assign({}, rec, {
         id: id,
-        photo_url: photo,
+        photo_url: hasUploadPhoto ? '' : (rec.photo_url || ''),
         created_at: now,
         updated_at: now
       });
-      if (photo) photoCache[id] = photo;
+      if (hasUploadPhoto) photoCache[id] = newDataPhoto;
       memRows.unshift(row);
       storeUpdatedAt = now;
       saveLocalCache();
 
       enqueueCloudSync(async () => {
-        await setDoc(doc(db, FIRESTORE_COLLECTION, id), row);
+        let finalPhotoUrl = row.photo_url;
+        if (hasUploadPhoto) {
+          const cloudUrl = await uploadImageToCloudinary(newDataPhoto);
+          if (cloudUrl) {
+            finalPhotoUrl = cloudUrl;
+            row.photo_url = cloudUrl;
+            const target = memRows.find((r) => r.id === id);
+            if (target) { target.photo_url = cloudUrl; saveLocalCache(); }
+          }
+        }
+        if (db) {
+          await setDoc(doc(db, FIRESTORE_COLLECTION, id), Object.assign({}, row, { photo_url: finalPhotoUrl }));
+        }
       });
       return row;
     },
@@ -1144,10 +1174,12 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       const prev = memRows[i];
       const now = new Date().toISOString();
       const next = Object.assign({}, prev, patch, { updated_at: now });
+      let uploadData = '';
 
       if (photoAction && photoAction.type === 'upload') {
-        next.photo_url = photoAction.dataUrl;
-        photoCache[id] = photoAction.dataUrl;
+        uploadData = photoAction.dataUrl;
+        photoCache[id] = uploadData;
+        next.photo_url = prev.photo_url || '';
       } else if (photoAction && photoAction.type === 'url') {
         next.photo_url = photoAction.url;
         delete photoCache[id];
@@ -1163,7 +1195,19 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       saveLocalCache();
 
       enqueueCloudSync(async () => {
-        await setDoc(doc(db, FIRESTORE_COLLECTION, id), next);
+        let finalPhotoUrl = next.photo_url;
+        if (uploadData) {
+          const cloudUrl = await uploadImageToCloudinary(uploadData);
+          if (cloudUrl) {
+            finalPhotoUrl = cloudUrl;
+            next.photo_url = cloudUrl;
+            const target = memRows.find((r) => r.id === id);
+            if (target) { target.photo_url = cloudUrl; saveLocalCache(); }
+          }
+        }
+        if (db) {
+          await setDoc(doc(db, FIRESTORE_COLLECTION, id), Object.assign({}, next, { photo_url: finalPhotoUrl }));
+        }
       });
       return next;
     },
