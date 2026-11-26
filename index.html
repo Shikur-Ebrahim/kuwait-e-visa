@@ -6,14 +6,14 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#003366">
 <meta name="format-detection" content="telephone=no">
-<meta name="description" content="Kuwait eVisa status inquiry and verification portal. An official Ministry of Interior service.">
-<title>eVisa Status Inquiry · State of Kuwait </title>
+<meta name="description" content="Demonstration prototype of a Kuwait eVisa status inquiry and verification portal. Not an official Ministry of Interior service.">
+<title>eVisa Status Inquiry · State of Kuwait (Demonstration)</title>
 
 <!-- Open Graph / Rich Social Sharing Preview -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="State of Kuwait · Ministry of Interior">
-<meta property="og:title" content="eVisa Status Inquiry · State of Kuwait">
-<meta property="og:description" content="Kuwait eVisa status inquiry and verification portal. An official Ministry of Interior service.">
+<meta property="og:title" content="eVisa Status Inquiry · State of Kuwait (Demonstration)">
+<meta property="og:description" content="Demonstration prototype of a Kuwait eVisa status inquiry and verification portal. Not an official Ministry of Interior service.">
 <meta property="og:image" content="https://res.cloudinary.com/ujbsqmo3/image/upload/v1795688274/kuwait/kbwwjrga899q3ql7klcp.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -21,8 +21,8 @@
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="eVisa Status Inquiry · State of Kuwait">
-<meta name="twitter:description" content="Kuwait eVisa status inquiry and verification portal. An official Ministry of Interior service.">
+<meta name="twitter:title" content="eVisa Status Inquiry · State of Kuwait (Demonstration)">
+<meta name="twitter:description" content="Demonstration prototype of a Kuwait eVisa status inquiry and verification portal. Not an official Ministry of Interior service.">
 <meta name="twitter:image" content="https://res.cloudinary.com/ujbsqmo3/image/upload/v1795688274/kuwait/kbwwjrga899q3ql7klcp.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 29 6.5v12.4C29 25.8 23.2 29.6 16 30 8.8 29.6 3 25.8 3 18.9V6.5Z' fill='%23003366'/%3E%3Cpath d='M9 19.5h14l-2.2 4h-9.6Z' fill='%23c8a951'/%3E%3Cpath d='M16.6 9.5 21 19.5h-4.4Z' fill='%23e8d7a0'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -104,8 +104,8 @@ tailwind.config = {
 <a href="#inquiry" class="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-[4px] focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-navy focus:shadow">Skip to the inquiry form</a>
 
 <div class="bg-navy-900 px-4 py-1.5 text-center text-[11px] leading-relaxed text-gold-200">
-  <span class="font-semibold">Official service</span>: Ministry of Interior service information and document services.
-  <span class="ar-ui block sm:inline" dir="rtl" lang="ar">خدمة رسمية: معلومات وخدمات الوثائق التابعة لوزارة الداخلية.</span>
+  <span class="font-semibold">Demonstration build</span>: prototype for local testing, not an official Ministry of Interior service.
+  <span class="ar-ui block sm:inline" dir="rtl" lang="ar">نسخة تجريبية للعرض والاختبار، وليست خدمة رسمية تابعة لوزارة الداخلية.</span>
 </div>
 
 <header class="bg-navy text-white">
@@ -215,9 +215,9 @@ tailwind.config = {
       </div>
 
       <p class="mt-4 border-t border-sand-200 pt-3 text-[11px] leading-relaxed text-slate-500">
-    This is real data, including actual passport, visa, and personal information.
-    <span class="ar-ui block" dir="rtl" lang="ar">هذه بيانات حقيقية، بما في ذلك بيانات جواز السفر والتأشيرة والمعلومات الشخصية الفعلية.</span>
-    </p>
+        Prototype data only. Do not enter real passport, visa, or personal data.
+        <span class="ar-ui block" dir="rtl" lang="ar">بيانات تجريبية فقط. يرجى عدم إدخال بيانات حقيقية.</span>
+      </p>
     </form>
   </div>
 
@@ -292,7 +292,7 @@ tailwind.config = {
           <li class="flex items-baseline justify-between gap-2 border-b border-dotted border-slate-300 pb-1 text-[13px]"><span class="font-semibold text-ink">Photograph and seal</span><span class="ar-ui text-slate-600" dir="rtl" lang="ar">الصورة والختم</span></li>
         </ul>
         <p class="mt-3 text-[11px] leading-relaxed text-slate-500">
-    The photograph, seal, barcode, QR code, and MRZ lines on this document are real, scannable, and verifiable.
+          The photograph, the seal, the barcode, the QR block and the MRZ lines on the demonstration document are labelled placeholders. Nothing on it is scannable or verifiable.
         </p>
       </div>
       <div class="grid content-start gap-3">
@@ -383,12 +383,24 @@ tailwind.config = {
           <span class="faq-plus flex-none text-xl font-semibold text-gold-700" aria-hidden="true">+</span>
         </summary>
         <p class="mt-3 max-w-3xl text-[13px] leading-relaxed text-slate-600">
-          It is a demonstration prototype built for layout review and flow. It is connected to
-          government system, and the emblem, the seal, the barcode, the QR scan and the MRZ lines are labelled
-          placeholders, verifiable credentials.
+          No. It is a demonstration prototype built for layout review and flow testing. It is not connected to any
+          government system, and the emblem, the seal, the barcode, the QR block and the MRZ lines are labelled
+          placeholders, not verifiable credentials.
         </p>
       </details>
-     
+      <details class="group px-4 py-3">
+        <summary class="flex items-center justify-between gap-4">
+          <span>
+            <span class="block text-[14px] font-semibold text-ink">Where are the records stored?</span>
+            <span class="ar-ui mt-0.5 block text-[13px] text-slate-600" dir="rtl" lang="ar">أين تُحفظ السجلات؟</span>
+          </span>
+          <span class="faq-plus flex-none text-xl font-semibold text-gold-700" aria-hidden="true">+</span>
+        </summary>
+        <p class="mt-3 max-w-3xl text-[13px] leading-relaxed text-slate-600">
+          In the cloud registry connected to this portal with local browser caching for offline speed. Keep test
+          entries clearly labelled and verify share links before sending.
+        </p>
+      </details>
       <details class="group px-4 py-3">
         <summary class="flex items-center justify-between gap-4">
           <span>
@@ -412,11 +424,36 @@ tailwind.config = {
         </summary>
         <p class="mt-3 max-w-3xl text-[13px] leading-relaxed text-slate-600">
           Yes. Download image saves a PNG of the document, and Print or save as PDF opens a print view with only the
-          document on the page. Both exist so the printed layout can be reviewed.
+          document on the page. Both exist so the printed layout can be reviewed, and the document itself is marked
+          as a demo either way.
         </p>
       </details>
-   
-     
+      <details class="group px-4 py-3">
+        <summary class="flex items-center justify-between gap-4">
+          <span>
+            <span class="block text-[14px] font-semibold text-ink">Does the QR code or barcode scan?</span>
+            <span class="ar-ui mt-0.5 block text-[13px] text-slate-600" dir="rtl" lang="ar">هل يعمل الرمز الشريطي أو رمز الاستجابة السريعة؟</span>
+          </span>
+          <span class="faq-plus flex-none text-xl font-semibold text-gold-700" aria-hidden="true">+</span>
+        </summary>
+        <p class="mt-3 max-w-3xl text-[13px] leading-relaxed text-slate-600">
+          No. The QR block, the barcode and the MRZ lines are drawn illustrations for the layout, and the document
+          says so on its face.
+        </p>
+      </details>
+      <details class="group px-4 py-3">
+        <summary class="flex items-center justify-between gap-4">
+          <span>
+            <span class="block text-[14px] font-semibold text-ink">Who can open the staff console?</span>
+            <span class="ar-ui mt-0.5 block text-[13px] text-slate-600" dir="rtl" lang="ar">من يستطيع فتح لوحة الموظفين؟</span>
+          </span>
+          <span class="faq-plus flex-none text-xl font-semibold text-gold-700" aria-hidden="true">+</span>
+        </summary>
+        <p class="mt-3 max-w-3xl text-[13px] leading-relaxed text-slate-600">
+          Anyone holding the passcode. It is a demo gate written in the page source, not a login, so the console suits
+          test data only.
+        </p>
+      </details>
     </div>
   </section>
 
@@ -1473,7 +1510,7 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       + '<p class="text-[5px] font-bold">PLACEHOLDER SEAL</p>'
       + '</div></div></div></div>'
       + '<figcaption class="mt-1 text-center text-[9px] text-slate-600">Photograph · الصورة</figcaption>'
-      + '<figcaption class="text-center text-[8px] text-slate-500">it is a real person profile</figcaption>'
+      + '<figcaption class="text-center text-[8px] text-slate-500">Placeholder, not a real person</figcaption>'
       + '</figure>'
       + '<div class="min-w-0"><div class="grid gap-x-5 gap-y-3 sm:grid-cols-2">'
       + docFields(v).map(fieldHtml).join('')
