@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Kuwait eVisa prototype records collection
+    match /kuwait_visas/{document=**} {
+      // Prototype demo mode: public read & write for portal testing
+      allow read, write: if true;
+    }
+  }
+}
