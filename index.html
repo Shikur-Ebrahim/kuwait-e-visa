@@ -33,8 +33,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
-<!-- QR code generator: produces real scannable codes -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 <!-- Tailwind is pinned to v3: the v4 play CDN emits oklch() colors that html2canvas cannot parse for the PNG export. -->
 <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -1319,20 +1317,15 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
     };
   }
 
-  /* Real scannable QR code using the qrcode library */
-  function drawQr(canvas, url) {
-    if (typeof QRCode === 'undefined') {
-      // fallback: show nothing if library not loaded
-      return;
-    }
-    QRCode.toCanvas(canvas, url, {
-      width: 88,
-      margin: 1,
-      color: { dark: '#003366', light: '#ffffff' },
-      errorCorrectionLevel: 'M'
-    }, function (err) {
-      // silently ignore errors
-    });
+  /* Real scannable QR code — renders via qrserver.com free API */
+  function drawQr(imgEl, url) {
+    if (!imgEl) return;
+    var encoded = encodeURIComponent(url);
+    imgEl.src = 'https://api.qrserver.com/v1/create-qr-code/?size=176x176&margin=4&color=003366&bgcolor=FFFFFF&data=' + encoded;
+    imgEl.onerror = function () {
+      // fallback: try without color params
+      imgEl.src = 'https://api.qrserver.com/v1/create-qr-code/?size=176x176&data=' + encoded;
+    };
   }
 
   function drawBarcode(canvas, seed) {
@@ -1465,7 +1458,7 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
       + '<div class="border-t border-dashed border-sand-300 bg-sand-50 px-4 py-3 sm:px-5">'
       + '<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">'
       + '<div class="flex items-center gap-3">'
-      + '<canvas id="qrCanvas" class="h-[88px] w-[88px] shrink-0 rounded-[3px] border border-sand-300 bg-white"></canvas>'
+      + '<img id="qrImg" src="" alt="QR code" class="h-[88px] w-[88px] shrink-0 rounded-[3px] border border-sand-300 bg-white">'
       + '<div class="min-w-0">'
       + '<p class="text-[10px] font-semibold text-slate-600">Scan to verify</p>'
       + '<p class="ar-doc text-[13px] font-semibold text-ink" dir="rtl" lang="ar">رمز التحقق</p>'
@@ -1543,10 +1536,10 @@ const FIRESTORE_COLLECTION = 'kuwait_visas';
   function setResult(html) { $('#result').innerHTML = html; }
 
   function afterDocRender(v) {
-    const qr = document.getElementById('qrCanvas');
-    if (qr) {
+    const qrImg = document.getElementById('qrImg');
+    if (qrImg) {
       const verifyUrl = 'https://kuwait-e-visa.vercel.app/?code=' + encodeURIComponent(v.code || '');
-      drawQr(qr, verifyUrl);
+      drawQr(qrImg, verifyUrl);
     }
     const bar = document.getElementById('barCanvas');
     if (bar) drawBarcode(bar, serialOf(v) + '|' + (v.passport_no || ''));
